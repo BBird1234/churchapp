@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <link th:href="@{/css/styles.css}" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+</head>
+<body>
+<div class="main">
+
+    <section id="title">
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <a class="navbar-brand" href="">ChurchApp</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="">Finances</a>
+                    </li>
+                    <li class="nav-item">
+                        <a onclick="openInsertModal()" class="addItemButton nav-link" >ADD +</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>  </div></section>
+        <div class="pageData">
+
+            <div class="mainCards">
+            </div>
+
+
+        <div class="mainTables">
+        </div>
+
+    </div>
+
+        <div class="allModals">
+        <!-- Insert Modal -->
+        <div id="insertModal" class="modal-overlay">
+            <div >
+                <label>Add</label>
+            </div>
+            <div class="modal-content">
+                <span class="close" onclick="closeInsertModal()"><button class="close">Close</button></span>
+                <form>
+                    <label for="insertId" hidden>ID:</label>
+                    <input type="text" id="insertId" value="0" hidden>
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" required>
+                    <label for="msisdn">MSISDN:</label>
+                    <input type="number" id="msisdn" required>
+                    <label for="gender">Gender:</label>
+                    <select id="gender">
+                        <option >Select Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <label for="birthday">Date of Birth:</label>
+                    <input type="date" id="birthday" required>
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" required>
+
+                    <button type="button" id="addSniper">Add Item</button>
+
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Cash Modal -->
+        <div id="cashModal" class="modal-overlay">
+            <div>
+                <label>Add Cash</label>
+            </div>
+            <div class="modal-content">
+                <span class="close" onclick="closeCashModal()"><button class="close">Close</button></span>
+                <form>
+                    <label for="sniperId" hidden>Sniper ID:</label>
+                    <span id="sniperId" hidden></span>
+                    <span id="emailVal" hidden></span>
+                    <span id="msisdnVal" hidden></span>
+                    <span id="birthdayVal" hidden></span>
+                    <span id="genderVal" hidden></span>
+                    <span id="usernameVal"></span>
+
+                    <label for="insertId" hidden>ID:</label>
+                    <input type="text" id="cashId" value="0" hidden>
+                    <label for="cash">Cash:</label>
+                    <input type="number" id="cash" required>
+                    <label for="month">Month:</label>
+                    <select id="month">
+                        <option >Select Month</option>
+                        <option>January</option>
+                        <option>February</option>
+                        <option>March</option>
+                        <option>April</option>
+                        <option>May</option>
+                        <option>June</option>
+                        <option>July</option>
+                        <option>August</option>
+                        <option>September</option>
+                        <option>October</option>
+                        <option>November</option>
+                        <option>December</option>
+                    </select>
+
+                    <button type="button" id="sendCash">Add Cash</button>
+
+                </form>
+
+            </div>
+        </div>
+
+
+        <!-- Update Modal -->
+        <div id="updateModal" class="modal-overlay">
+            <div>
+                <label>Edit</label>
+            </div>
+            <div class="modal-content">
+                <span class="close" onclick="closeUpdateModal()"><button class="close">Close</button></span>
+                <form id="updateForm">
+                    <label for="sniperIdUpdate">Item ID:</label>
+                    <input type="text" id="sniperIdUpdate" name="*{formData.id}">
+                    <label for="birthdayUpdate">Birthday</label>
+                    <input type="text" id="birthdayUpdate" name="*{formData.birthday}">
+                    <label for="genderUpdate">Gender</label>
+                    <input type="text" id="genderUpdate" name="*{formData.gender}">
+                    <label for="usernameUpdate">Username</label>
+                    <input type="text" id="usernameUpdate" name="item">
+                    <label for="msisdnUpdate">MSISDN</label>
+                    <input type="text" id="msisdnUpdate" name="msisdn">
+                    <label for="emailUpdate">E-mail:</label>
+                    <input type="text" id="emailUpdate" name="email">
+
+                    <button type="button" onclick="updateItem()">Update Item</button>
+                </form>
+
+                <p th:if="${updateItem == null}">Item not found</p>
+            </div>
+        </div>
+
+        <div id="detailsModal" class="modal-overlay" >
+            <div >
+                <label>Details Modal</label>
+            </div>
+            <div class="modal-content">
+                <span class="close" onclick="closeDetailsModal()"><button class="close">Close</button></span>
+                <form id="detailsForm">
+                    <label for="sniperIdDetails">Item ID:</label>
+                    <span id="sniperIdDetails"></span>
+
+                    <label for="birthdayDetails">Birthday:</label>
+                    <span id="birthdayDetails"></span>
+
+                    <label for="genderDetails">Gender:</label>
+                    <span id="genderDetails"></span>
+
+                    <label for="usernameDetails">Username:</label>
+                    <span id="usernameDetails"></span>
+
+                    <label for="msisdnDetails">MSISDN:</label>
+                    <span id="msisdnDetails"></span>
+
+                    <label for="emailDetails">E-mail:</label>
+                    <span id="emailDetails"></span>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+</div>
+
+</div>
+</div>
+
+<script th:src="@{/js/index.js}" charset="utf-8"></script>
+
+</body>
+</html>
